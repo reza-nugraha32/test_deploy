@@ -1,337 +1,520 @@
-<!doctype html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
-<title>Buat Rea</title><style>
-body{
-margin:0;
-background:
-linear-gradient(135deg,#0e152b 0%,#19264e 42%,#18223f 75%,#111c3f 100%);
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
-font-family:"Caveat",cursive;
-overflow:hidden;
-}
-#book{position:relative;width:340px;height:460px;perspective:1600px}
-.page{
-position:absolute;
-inset:0;
-background:linear-gradient(135deg,#ffdfec 0%,#fbeef3 22%,#fff4f8 55%,#d1f2ff 100%);
-border-radius:2px 10px 10px 2px;
-padding:28px;
-box-sizing:border-box;
-transform-origin:left center;
-transition:    
-    transform 1.8s cubic-bezier(.25,.85,.2,1),
-    filter 1.8s;;
-box-shadow:0 10px 30px rgba(125, 71, 98, 0.2);
-}
-.page:nth-child(1){background:#efc8d4;z-index:5;display:flex;align-items:center;justify-content:center;flex-direction:column}
-.page:nth-child(2){z-index:4}.page:nth-child(3){z-index:3}.page:nth-child(4){z-index:2}.page:nth-child(5){z-index:1}
-.flip{transform:rotateY(-155deg) skewY(-5deg) scaleX(.96);filter:brightness(.92)}
-.controls{position:fixed;bottom:20px;display:flex;gap:10px}
-button{padding:10px 18px;border-radius:24px;border:0;cursor:pointer}
-button:disabled{opacity:.4;cursor:not-allowed}
-#coverTitle{
-font-family:"Dancing Script",cursive;
-font-size:3rem;
-font-weight:700;
-color:#4a1a30;
-text-shadow:0 2px 10px rgba(255,105,180,.25);
-margin-bottom:8px;
-}
-
-#coverText{
-font-size:1.5rem;
-color:#9b5b7d;
-}
-
-h2{
-font-family:"Dancing Script",cursive;
-font-size:2rem;
-font-weight:700;
-color:#a04572;
-margin:0 0 12px;
-}
-
-.page p{
-font-size:1.55rem;
-line-height:1.45;
-color:#5a3d4a;
-letter-spacing:.2px;
-}
-
-#stars,#floaters{position:fixed;inset:0;pointer-events:none;overflow:hidden}
-.star{position:absolute;color:white;opacity:.45;animation:twinkle 3s infinite}
-@keyframes twinkle{50%{opacity:1;transform:scale(1.25)}}
-.floater{position:absolute;animation:rise linear infinite;opacity:.55}
-@keyframes rise{
-0%{transform:translateY(110vh) scale(.8) rotate(-6deg);opacity:0}
-8%{opacity:.3}
-15%{transform:translateY(95vh) scale(1.2) rotate(4deg);opacity:1}
-22%{opacity:.45;transform:translateY(90vh) scale(.9)}
-30%{opacity:.95}
-45%{transform:translateY(60vh) scale(1.08) rotate(3deg);opacity:.5}
-55%{opacity:1}
-65%{transform:translateY(35vh) scale(1.15) rotate(-4deg);opacity:.25}
-75%{opacity:.9}
-85%{opacity:.45}
-100%{transform:translateY(-20vh) scale(.95) rotate(6deg);opacity:0}
-}
-.controls{animation:floaty 3.5s ease-in-out infinite}
-
-button{
-background:linear-gradient(135deg,#fcedf2,#fff);
-color:#9b4d73;
-font-weight:700;
-padding:12px 22px;
-border:2px solid rgba(255,255,255,.7);
-box-shadow:0 8px 18px rgba(0,0,0,.18);
-transition:.25s transform,.25s box-shadow;
-}
-
-button{
-background:linear-gradient(135deg,#ffe8f0,#fff);
-color:#9b4d73;
-font-weight:700;
-padding:12px 22px;
-border:2px solid rgba(255,255,255,.7);
-border-radius:24px;
-cursor:pointer;
-outline:none;
-appearance:none;
--webkit-appearance:none;
--webkit-tap-highlight-color:transparent;
-user-select:none;
--webkit-user-select:none;
-touch-action:manipulation;
-box-shadow:0 8px 18px rgba(255,105,180,.3);
-transition:transform .25s,box-shadow .25s,filter .25s;
-}
-
-button:hover:not(:disabled){
-transform:translateY(-5px) scale(1.04);
-box-shadow:0 12px 24px rgba(255,105,180,.3);
-}
-
-button:active:not(:disabled){
-transform:scale(.95);
-box-shadow:0 0 26px rgba(255,105,180,.3);
-filter:brightness(1.03);
-}
-
-button:focus,
-button:focus-visible,
-button:active{
-outline:none;
-box-shadow:0 0 26px rgba(255,105,180,.3);
-}
-
-button::-moz-focus-inner{
-border:0;
-}
-
-button:disabled{
-opacity:.4;
-cursor:not-allowed;
-}
-
-@keyframes floaty{
-0%{transform:translate(0,0) rotate(0deg)}
-25%{transform:translate(4px,-5px) rotate(1deg)}
-50%{transform:translate(0,-8px) rotate(0deg)}
-75%{transform:translate(-4px,-4px) rotate(-1deg)}
-100%{transform:translate(0,0) rotate(0deg)}
-}
-
-#book{
-animation:bookDrift 7s ease-in-out infinite;
-}
-@keyframes bookDrift{
-0%{transform:translate(0px,0px) rotate(0deg);}
-15%{transform:translate(2px,-3px) rotate(.12deg);}
-30%{transform:translate(-1.6px,1.5px) rotate(-.10deg);}
-45%{transform:translate(3px,3px) rotate(.08deg);}
-60%{transform:translate(-1.8px,-1.4px) rotate(-.12deg);}
-75%{transform:translate(2px,2px) rotate(.06deg);}
-100%{transform:translate(0px,0px) rotate(0deg);}
-}
-
-.cat{position:fixed;bottom:12px;left:-250px;width:260px;pointer-events:none;z-index:999;animation:catWalk 22s linear infinite}
-@keyframes catWalk{
-0%,8%{left:-250px;transform:translateY(-8px) scaleX(-1)}
-40%{left:calc(100vw + 20px);transform:translateY(-8px) scaleX(-1)}
-41%,58%{left:calc(100vw + 20px);transform:translateY(6px) scaleX(1)}
-90%{left:-250px;transform:translateY(6px) scaleX(1)}
-100%{left:-250px;transform:translateY(6px) scaleX(1)}
-}
-
-#lockScreen{
-position:fixed;
-inset:0;
-display:flex;
-justify-content:center;
-align-items:center;
-background:linear-gradient(160deg,#18223f,#24355f);
-z-index:9999;
-transition:opacity .8s;
-}
-
-.lockCard{
-width:320px;
-padding:32px;
-text-align:center;
-background:linear-gradient(135deg,#ffe6f0,#fff);
-border-radius:18px;
-box-shadow:0 15px 40px rgba(255,105,180,.35);
-}
-
-.lockCard h1{
-font-size:3rem;
-margin:0;
-}
-
-.lockCard h2{
-margin:8px 0;
-font-family:"Dancing Script",cursive;
-font-size:2.2rem;
-color:#a04572;
-}
-
-.lockCard p{
-font-size:1.3rem;
-}
-
-#password{
-width:100%;
-padding:12px;
-margin:18px 0;
-font-family:"Caveat",cursive;
-font-size:1.4rem;
-border:2px solid #f3b6cf;
-border-radius:12px;
-box-sizing:border-box;
-outline:none;
-}
-
-#password:focus{
-border-color:#ff7eb6;
-}
-
-#unlock{
-width:100%;
-}
-
-#wrong{
-opacity:0;
-color:#c14f76;
-margin-top:12px;
-transition:.3s;
-}
-.showPass{
-display:flex;
-justify-content:center;
-align-items:center;
-gap:8px;
-margin:8px 0 18px;
-font-size:1.15rem;
-color:#8d5872;
-cursor:pointer;
-user-select:none;
-}
-
-.showPass input{
-accent-color:#d96b9a;
-cursor:pointer;
-}
-</style></head>
-<div id="lockScreen">
-  <div class="lockCard">
-    <h2>Password Please?</h2>
-
-    <input
-    id="password"
-    type="password"
-    placeholder="Enter the secret password..."
-    autocomplete="off">
-
-    <label class="showPass">
-    <input type="checkbox" id="togglePass">
-    Show password
-    </label>
-
-    <button id="unlock">✨ Open Book</button>
-    <p id="wrong">Hmm... that's not the magic word.</p>
-  </div>
-</div>
-<body><div id='stars'></div><div id='floaters'></div>
-<div id=book>
-<div class=page><h1 id='coverTitle'>for Reaa✨</h1><p id='coverText'>Open this little book.</p></div>
-<div class=page><h2>Page 1</h2><p>Hi, Ree. I know you're probably hard at work right now, soo..</p></div>
-<div class=page><h2>Page 2</h2><p>I wish you a good day and everything goes well! You've been doing such a great job, no matter how hectic it's been.. 😊</p></div>
-<div class=page><h2>Page 3</h2><p>Just a little reminder that someone is cheering for you, even from a distance..🤞</p></div>
-<div class=page><h2>Last Page</h2><p>I hope you take care of yourself. Please rest well when you finally get home, even a super Rea needs a good sleep!🌙</p></div>
-</div>
-<div class=controls><button id=prev>🌸 Back</button><button id=next>Next ✨</button></div>
-<script>
-const pages=[...document.querySelectorAll('.page')];
-let i=0;
-const prev=document.getElementById('prev'),next=document.getElementById('next');
-function update(){
-pages.forEach((p,idx)=>p.classList.toggle('flip',idx<i));
-prev.disabled=i===0; next.disabled=i===pages.length-1;
-const t=document.getElementById('coverTitle');
-const c=document.getElementById('coverText');
-if(i===0){
- t.style.opacity='1';
- c.style.opacity='1';
-}else{
- t.style.opacity='0';
- c.style.opacity='0';
-}
-}
-next.onclick=()=>{if(i<pages.length-1){i++;update();}}
-prev.onclick=()=>{if(i>0){i--;update();}}
-update();
-
-const SECRET="1234";   
-const lock=document.getElementById("lockScreen");
-const pass=document.getElementById("password");
-const unlock=document.getElementById("unlock");
-const wrong=document.getElementById("wrong");
-
-function openBook(){
-    if(pass.value.trim().toLowerCase()===SECRET.toLowerCase()){
-        lock.style.opacity="0";
-        setTimeout(()=>lock.remove(),800);
-    }else{
-        wrong.style.opacity="1";
-        pass.animate([
-            {transform:"translateX(-8px)"},
-            {transform:"translateX(8px)"},
-            {transform:"translateX(-6px)"},
-            {transform:"translateX(6px)"},
-            {transform:"translateX(0)"}
-        ],{duration:350});
+<!doctype html>
+<html>
+<head>
+  <meta charset='utf-8'>
+  <meta name='viewport' content='width=device-width,initial-scale=1'>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Dancing+Script:wght@600;700&family=Inter:opsz@14..32&display=swap" rel="stylesheet">
+  <title>Buat Rea</title>
+  <style>
+    /* ----- global & reset ----- */
+    * {
+      box-sizing: border-box;
     }
-}
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #0e152b 0%, #19264e 42%, #18223f 75%, #111c3f 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      font-family: "Caveat", cursive;
+      overflow: hidden;
+      position: relative;
+    }
 
-unlock.onclick=openBook;
-pass.addEventListener("keydown",e=>{
-    if(e.key==="Enter") openBook();
-});
+    /* ----- book & pages (romantic, as requested) ----- */
+    #book {
+      position: relative;
+      width: 340px;
+      height: 460px;
+      perspective: 1600px;
+      animation: bookDrift 7s ease-in-out infinite;
+    }
+    @keyframes bookDrift {
+      0% { transform: translate(0px, 0px) rotate(0deg); }
+      15% { transform: translate(2px, -3px) rotate(0.12deg); }
+      30% { transform: translate(-1.6px, 1.5px) rotate(-0.10deg); }
+      45% { transform: translate(3px, 3px) rotate(0.08deg); }
+      60% { transform: translate(-1.8px, -1.4px) rotate(-0.12deg); }
+      75% { transform: translate(2px, 2px) rotate(0.06deg); }
+      100% { transform: translate(0px, 0px) rotate(0deg); }
+    }
 
-const togglePass=document.getElementById("togglePass");
+    .page {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, #ffdfec 0%, #fbeef3 22%, #fff4f8 55%, #d1f2ff 100%);
+      border-radius: 2px 10px 10px 2px;
+      padding: 28px;
+      box-sizing: border-box;
+      transform-origin: left center;
+      transition: transform 1.8s cubic-bezier(.25, .85, .2, 1), filter 1.8s;
+      box-shadow: 0 10px 30px rgba(125, 71, 98, 0.2);
+      overflow-y: auto;
+    }
+    .page:nth-child(1) {
+      background: #efc8d4;
+      z-index: 5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+    .page:nth-child(2) { z-index: 4; }
+    .page:nth-child(3) { z-index: 3; }
+    .page:nth-child(4) { z-index: 2; }
+    .page:nth-child(5) { z-index: 1; }
 
-togglePass.addEventListener("change",()=>{
-    pass.type=togglePass.checked ? "text" : "password";
-});
+    .flip {
+      transform: rotateY(-155deg) skewY(-5deg) scaleX(.96);
+      filter: brightness(.92);
+    }
 
-const stars=document.getElementById('stars');
-for(let s=0;s<28;s++){let e=document.createElement('div');e.className='star';e.textContent=Math.random()>.5?'✦':'✧';e.style.left=Math.random()*100+'vw';e.style.top=Math.random()*100+'vh';e.style.animationDelay=(Math.random()*3)+'s';stars.appendChild(e);}
-const icons=['✨','🐟','🌸','💫', '🦈'];
-const fl=document.getElementById('floaters');
-for(let k=0;k<14;k++){let e=document.createElement('div');e.className='floater';e.textContent=icons[Math.floor(Math.random()*icons.length)];e.style.left=Math.random()*100+'vw';e.style.fontSize=(16+Math.random()*10)+'px';e.style.animationDuration=(10+Math.random()*8)+'s';e.style.animationDelay=(-Math.random()*15)+'s';fl.appendChild(e);}
-</script><img class='cat' src='https://media2.giphy.com/media/OWgVcfYgegW7WQbccX/giphy.gif?cid=6c09b952bmn880yamv9t7ts4g5yiiv2809rzrljotlq0rd5w&ep=v1_stickers_related&rid=giphy.gif&ct=s' alt='walking cat'></body></html>
+    #coverTitle {
+      font-family: "Dancing Script", cursive;
+      font-size: 3rem;
+      font-weight: 700;
+      color: #4a1a30;
+      text-shadow: 0 2px 10px rgba(255, 105, 180, .25);
+      margin-bottom: 8px;
+      transition: opacity 0.6s;
+    }
+    #coverText {
+      font-size: 1.5rem;
+      color: #9b5b7d;
+      transition: opacity 0.6s;
+    }
+    h2 {
+      font-family: "Dancing Script", cursive;
+      font-size: 2rem;
+      font-weight: 700;
+      color: #a04572;
+      margin: 0 0 12px;
+    }
+    .page p {
+      font-size: 1.55rem;
+      line-height: 1.45;
+      color: #5a3d4a;
+      letter-spacing: .2px;
+    }
+
+    /* ----- controls (floating) ----- */
+    .controls {
+      position: fixed;
+      bottom: 20px;
+      display: flex;
+      gap: 10px;
+      animation: floaty 3.5s ease-in-out infinite;
+      z-index: 10;
+    }
+    @keyframes floaty {
+      0% { transform: translate(0,0) rotate(0deg); }
+      25% { transform: translate(4px,-5px) rotate(1deg); }
+      50% { transform: translate(0,-8px) rotate(0deg); }
+      75% { transform: translate(-4px,-4px) rotate(-1deg); }
+      100% { transform: translate(0,0) rotate(0deg); }
+    }
+
+    button {
+      background: linear-gradient(135deg, #ffe8f0, #fff);
+      color: #9b4d73;
+      font-weight: 700;
+      padding: 12px 22px;
+      border: 2px solid rgba(255, 255, 255, .7);
+      border-radius: 24px;
+      cursor: pointer;
+      outline: none;
+      appearance: none;
+      -webkit-appearance: none;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+      box-shadow: 0 8px 18px rgba(255, 105, 180, .3);
+      transition: transform .25s, box-shadow .25s, filter .25s;
+      font-family: "Caveat", cursive;
+      font-size: 1.2rem;
+    }
+    button:hover:not(:disabled) {
+      transform: translateY(-5px) scale(1.04);
+      box-shadow: 0 12px 24px rgba(255, 105, 180, .3);
+    }
+    button:active:not(:disabled) {
+      transform: scale(.95);
+      box-shadow: 0 0 26px rgba(255, 105, 180, .3);
+      filter: brightness(1.03);
+    }
+    button:focus-visible {
+      outline: 2px solid #ffa5c3;
+    }
+    button:disabled {
+      opacity: .4;
+      cursor: not-allowed;
+    }
+
+    /* ----- sparkle burst (unlock animation) ----- */
+    .sparkle-burst {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9998;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+    }
+    .sparkle-particle {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle, #fff9e6, #ffe6b0);
+      box-shadow: 0 0 20px #ffd966, 0 0 40px #ffb347;
+      animation: burstOut 0.9s ease-out forwards;
+      opacity: 0;
+    }
+    @keyframes burstOut {
+      0% { transform: scale(0.2) translate(0,0); opacity: 1; }
+      100% { transform: scale(1.8) translate(var(--tx), var(--ty)); opacity: 0; }
+    }
+
+    /* ----- floating stars & icons (ambient) ----- */
+    #stars, #floaters {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+    .star {
+      position: absolute;
+      color: white;
+      opacity: .45;
+      animation: twinkle 3s infinite;
+    }
+    @keyframes twinkle {
+      50% { opacity: 1; transform: scale(1.25); }
+    }
+    .floater {
+      position: absolute;
+      animation: rise linear infinite;
+      opacity: .55;
+      z-index: 1;
+    }
+    @keyframes rise {
+      0% { transform: translateY(110vh) scale(.8) rotate(-6deg); opacity: 0; }
+      8% { opacity: .3; }
+      15% { transform: translateY(95vh) scale(1.2) rotate(4deg); opacity: 1; }
+      22% { opacity: .45; transform: translateY(90vh) scale(.9); }
+      30% { opacity: .95; }
+      45% { transform: translateY(60vh) scale(1.08) rotate(3deg); opacity: .5; }
+      55% { opacity: 1; }
+      65% { transform: translateY(35vh) scale(1.15) rotate(-4deg); opacity: .25; }
+      75% { opacity: .9; }
+      85% { opacity: .45; }
+      100% { transform: translateY(-20vh) scale(.95) rotate(6deg); opacity: 0; }
+    }
+
+    /* ----- walking cat ----- */
+    .cat {
+      position: fixed;
+      bottom: 12px;
+      left: -250px;
+      width: 260px;
+      pointer-events: none;
+      z-index: 999;
+      animation: catWalk 22s linear infinite;
+    }
+    @keyframes catWalk {
+      0%, 8% { left: -250px; transform: translateY(-8px) scaleX(-1); }
+      40% { left: calc(100vw + 20px); transform: translateY(-8px) scaleX(-1); }
+      41%, 58% { left: calc(100vw + 20px); transform: translateY(6px) scaleX(1); }
+      90% { left: -250px; transform: translateY(6px) scaleX(1); }
+      100% { left: -250px; transform: translateY(6px) scaleX(1); }
+    }
+
+    /* ----- LOCK SCREEN (inconspicuous, plain, normal font) ----- */
+    #lockScreen {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #1a233a;          /* solid dark blue-gray, no gradient drama */
+      z-index: 9999;
+      transition: opacity 0.6s ease;
+    }
+    .lockCard {
+      width: 320px;
+      padding: 32px 28px;
+      text-align: center;
+      background: #f5f5f5;          /* plain light grey */
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      border: 1px solid #d0d0d0;
+    }
+    .lockCard h2 {
+      font-family: 'Inter', sans-serif;   /* normal, clean font */
+      font-size: 1.4rem;
+      font-weight: 500;
+      color: #2c3e50;
+      margin: 0 0 6px 0;
+      letter-spacing: -0.3px;
+    }
+    .lockCard p {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      color: #3d4f5f;
+      margin: 4px 0 10px 0;
+    }
+    #password {
+      width: 100%;
+      padding: 12px 14px;
+      margin: 10px 0 6px 0;
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      border: 1px solid #bbb;
+      border-radius: 8px;
+      box-sizing: border-box;
+      outline: none;
+      background: white;
+      color: #1e2a36;
+    }
+    #password:focus {
+      border-color: #6c7a8a;
+      box-shadow: 0 0 0 2px rgba(80, 100, 120, 0.2);
+    }
+    .showPass {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      margin: 6px 0 14px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      color: #2c3e50;
+      cursor: pointer;
+      user-select: none;
+    }
+    .showPass input {
+      accent-color: #4a6a7a;
+      cursor: pointer;
+      width: 16px;
+      height: 16px;
+    }
+    #unlock {
+      background: #dce3eb;           /* muted, plain */
+      color: #1f2b36;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      font-size: 1rem;
+      padding: 12px 18px;
+      border: 1px solid #b0bcc9;
+      border-radius: 30px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+      transition: 0.2s;
+      width: 100%;
+      cursor: pointer;
+      letter-spacing: 0.2px;
+    }
+    #unlock:hover {
+      background: #d0dae5;
+      border-color: #8f9fb0;
+    }
+    #unlock:active {
+      transform: scale(0.97);
+    }
+    #wrong {
+      opacity: 0;
+      color: #b33c4a;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      margin-top: 12px;
+      transition: opacity 0.25s;
+    }
+    .lockCard h2:first-of-type {
+      margin-top: 0;
+    }
+    /* remove any decorative fonts from lock screen */
+    .lockCard h2, .lockCard p, .lockCard input, .lockCard button, .lockCard label {
+      font-family: 'Inter', sans-serif !important;
+    }
+
+    /* hide cover text when book is open */
+    #coverTitle, #coverText {
+      transition: opacity 0.6s;
+    }
+    .page:nth-child(1) h1, .page:nth-child(1) p {
+      transition: opacity 0.6s;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 🌟 ambient stars & floaters -->
+  <div id='stars'></div>
+  <div id='floaters'></div>
+
+  <!-- 📖 BOOK -->
+  <div id="book">
+    <div class="page"><h1 id='coverTitle'>for Reaa✨</h1><p id='coverText'>Open this little book.</p></div>
+    <div class="page"><h2>Page 1</h2><p>Hi, Ree. I know you're probably hard at work right now, soo..</p></div>
+    <div class="page"><h2>Page 2</h2><p>I wish you a good day and everything goes well! You've been doing such a great job, no matter how hectic it's been.. 😊</p></div>
+    <div class="page"><h2>Page 3</h2><p>Just a little reminder that someone is cheering for you, even from a distance..🤞</p></div>
+    <div class="page"><h2>Last Page</h2><p>I hope you take care of yourself. Please rest well when you finally get home, even a super Rea needs a good sleep!🌙</p></div>
+  </div>
+
+  <!-- book controls -->
+  <div class="controls">
+    <button id="prev">🌸 Back</button>
+    <button id="next">Next ✨</button>
+  </div>
+
+  <!-- 🐈 walking cat -->
+  <img class='cat' src='https://media2.giphy.com/media/OWgVcfYgegW7WQbccX/giphy.gif?cid=6c09b952bmn880yamv9t7ts4g5yiiv2809rzrljotlq0rd5w&ep=v1_stickers_related&rid=giphy.gif&ct=s' alt='walking cat'>
+
+  <!-- 🔒 LOCK SCREEN (plain, inconspicuous) -->
+  <div id="lockScreen">
+    <div class="lockCard">
+      <h2>Enter code</h2>
+      <p style="font-size:0.9rem; color:#3d4f5f; margin-bottom:12px;">This page is locked</p>
+      <input id="password" type="password" placeholder="Type the passcode" autocomplete="off">
+      <label class="showPass">
+        <input type="checkbox" id="togglePass">
+        Show password
+      </label>
+      <button id="unlock">Unlock</button>
+      <p id="wrong">Wrong code, try again</p>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      // ----- book flip logic -----
+      const pages = [...document.querySelectorAll('.page')];
+      let current = 0;
+      const prevBtn = document.getElementById('prev');
+      const nextBtn = document.getElementById('next');
+      const coverTitle = document.getElementById('coverTitle');
+      const coverText = document.getElementById('coverText');
+
+      function updateBook() {
+        pages.forEach((p, idx) => p.classList.toggle('flip', idx < current));
+        prevBtn.disabled = (current === 0);
+        nextBtn.disabled = (current === pages.length - 1);
+        // hide cover text when any page is flipped (i>0)
+        if (current === 0) {
+          coverTitle.style.opacity = '1';
+          coverText.style.opacity = '1';
+        } else {
+          coverTitle.style.opacity = '0';
+          coverText.style.opacity = '0';
+        }
+      }
+
+      nextBtn.onclick = () => { if (current < pages.length - 1) { current++; updateBook(); } };
+      prevBtn.onclick = () => { if (current > 0) { current--; updateBook(); } };
+      updateBook();
+
+      // ----- LOCK SCREEN (inconspicuous) -----
+      const SECRET = "1234";
+      const lockScreen = document.getElementById("lockScreen");
+      const passInput = document.getElementById("password");
+      const unlockBtn = document.getElementById("unlock");
+      const wrongMsg = document.getElementById("wrong");
+      const togglePass = document.getElementById("togglePass");
+
+      // show/hide password
+      togglePass.addEventListener('change', () => {
+        passInput.type = togglePass.checked ? 'text' : 'password';
+      });
+
+      // sparkle burst effect
+      function triggerSparkleBurst() {
+        const container = document.createElement('div');
+        container.className = 'sparkle-burst';
+        document.body.appendChild(container);
+
+        const count = 42;
+        for (let i = 0; i < count; i++) {
+          const p = document.createElement('div');
+          p.className = 'sparkle-particle';
+          const angle = Math.random() * 2 * Math.PI;
+          const dist = 120 + Math.random() * 200;
+          const tx = Math.cos(angle) * dist;
+          const ty = Math.sin(angle) * dist - 50;
+          p.style.setProperty('--tx', tx + 'px');
+          p.style.setProperty('--ty', ty + 'px');
+          p.style.left = (50 + (Math.random() - 0.5) * 20) + '%';
+          p.style.top = (50 + (Math.random() - 0.5) * 20) + '%';
+          p.style.width = (6 + Math.random() * 14) + 'px';
+          p.style.height = p.style.width;
+          p.style.animationDuration = (0.6 + Math.random() * 0.5) + 's';
+          p.style.animationDelay = (Math.random() * 0.25) + 's';
+          container.appendChild(p);
+        }
+
+        // remove container after animation
+        setTimeout(() => {
+          if (container.parentNode) container.remove();
+        }, 1500);
+      }
+
+      function openBook() {
+        const inputVal = passInput.value.trim();
+        if (inputVal.toLowerCase() === SECRET.toLowerCase()) {
+          // trigger sparkle burst
+          triggerSparkleBurst();
+          // fade out lock screen
+          lockScreen.style.opacity = '0';
+          setTimeout(() => {
+            if (lockScreen.parentNode) lockScreen.remove();
+          }, 700);
+          // clear wrong message
+          wrongMsg.style.opacity = '0';
+        } else {
+          wrongMsg.style.opacity = '1';
+          passInput.animate([
+            { transform: 'translateX(-8px)' },
+            { transform: 'translateX(8px)' },
+            { transform: 'translateX(-6px)' },
+            { transform: 'translateX(6px)' },
+            { transform: 'translateX(0)' }
+          ], { duration: 350 });
+          // auto-clear wrong after 2s
+          clearTimeout(window.wrongTimeout);
+          window.wrongTimeout = setTimeout(() => {
+            wrongMsg.style.opacity = '0';
+          }, 2200);
+        }
+      }
+
+      unlockBtn.onclick = openBook;
+      passInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') openBook();
+      });
+
+      // ----- ambient stars & floaters (unchanged) -----
+      const starsContainer = document.getElementById('stars');
+      for (let s = 0; s < 28; s++) {
+        let e = document.createElement('div');
+        e.className = 'star';
+        e.textContent = Math.random() > 0.5 ? '✦' : '✧';
+        e.style.left = Math.random() * 100 + 'vw';
+        e.style.top = Math.random() * 100 + 'vh';
+        e.style.animationDelay = (Math.random() * 3) + 's';
+        starsContainer.appendChild(e);
+      }
+      const icons = ['✨', '🐟', '🌸', '💫', '🦈'];
+      const fl = document.getElementById('floaters');
+      for (let k = 0; k < 14; k++) {
+        let e = document.createElement('div');
+        e.className = 'floater';
+        e.textContent = icons[Math.floor(Math.random() * icons.length)];
+        e.style.left = Math.random() * 100 + 'vw';
+        e.style.fontSize = (16 + Math.random() * 10) + 'px';
+        e.style.animationDuration = (10 + Math.random() * 8) + 's';
+        e.style.animationDelay = (-Math.random() * 15) + 's';
+        fl.appendChild(e);
+      }
+    })();
+  </script>
+</body>
+</html>
